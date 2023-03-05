@@ -1,7 +1,5 @@
-﻿namespace radar_api.ModelViews
+﻿namespace radar_api.ModelViews;
+public struct Home
 {
-  public struct Home
-  {
-    public string Message { get; set; }
-  }
+  public string Message { get; set; }
 }
