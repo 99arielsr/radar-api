@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "2ePy+zdbxAkzGeCgqt/R+mj7VwN+z5KZ4y68vGTwL0o=",
+  "Source": "radar-api",
+  "BasePath": "_content/radar-api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
