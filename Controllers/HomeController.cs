@@ -4,10 +4,10 @@ using radar_api.ModelViews;
 namespace radar_api.Controllers;
 
 [ApiController]
-[Route("/")]
 public class HomeController : ControllerBase
 {
-	[HttpGet]
+  [Route("/")]
+  [HttpGet]
 	public ActionResult Index()
 	{
 		return StatusCode(200, new Home
