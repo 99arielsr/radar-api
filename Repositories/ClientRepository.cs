@@ -7,17 +7,18 @@ public class ClientRepository : IService
 
   private static List<Client> list = new List<Client>();
 
-  public List<Client> GetAll()
+  public async Task<List<Client>> GetAllAsync()
   {
-    return list;
+    return await Task.FromResult(list);
   }
 
-  public void Create(Client client)
+  public async Task CreateAsync(Client client)
   {
     list.Add(client);
+    await Task.FromResult(new {});
   }
 
-  public Client Update(Client client)
+  public async Task<Client> UpdateAsync(Client client)
   {
     if (client.Id == 0) throw new Exception("id não pode ser zero");
 
@@ -31,11 +32,12 @@ public class ClientRepository : IService
     clientDB.Telephone= client.Telephone;
     clientDB.Email= client.Email;
 
-    return clientDB;
+    return await Task.FromResult(clientDB);
   }
 
-  public void Delete(Client client)
+  public async Task DeleteAsync(Client client)
   {
     list.Remove(client);
+    await Task.FromResult(new {});
   }
 }

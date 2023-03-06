@@ -14,7 +14,7 @@ public class ClientRepositoryMySql : IService
 
   private string? connection = null;
 
-  public List<Client> GetAll()
+  public async Task<List<Client>> GetAllAsync()
   {
     var list = new List<Client>();
     using (var conn = new MySqlConnection(connection))
@@ -23,7 +23,7 @@ public class ClientRepositoryMySql : IService
       var query = $"select * from clients;";
 
       var command = new MySqlCommand(query, conn);
-      var dataReader = command.ExecuteReader();
+      var dataReader = await command.ExecuteReaderAsync();
       while (dataReader.Read())
       {
         list.Add(new Client
@@ -41,7 +41,7 @@ public class ClientRepositoryMySql : IService
     return list;
   }
 
-  public void Create(Client client)
+  public async Task CreateAsync(Client client)
   {
     using(var conn = new MySqlConnection(connection))
     {
@@ -52,13 +52,13 @@ public class ClientRepositoryMySql : IService
       command.Parameters.Add(new MySqlParameter("@telephone", client.Telephone));
       command.Parameters.Add(new MySqlParameter("@email", client.Email));
 
-      command.ExecuteNonQuery();
+      await command.ExecuteNonQueryAsync();
 
       conn.Close();
     }    
   }
 
-  public Client Update(Client client)
+  public async Task<Client> UpdateAsync(Client client)
   {
     using (var conn = new MySqlConnection(connection))
     {
@@ -70,7 +70,7 @@ public class ClientRepositoryMySql : IService
       command.Parameters.Add(new MySqlParameter("@telephone", client.Telephone));
       command.Parameters.Add(new MySqlParameter("@email", client.Email));
 
-      command.ExecuteNonQuery();
+      await command.ExecuteNonQueryAsync();
 
       conn.Close();
     }
@@ -78,7 +78,7 @@ public class ClientRepositoryMySql : IService
     return client;
   }
 
-  public void Delete(Client client)
+  public async Task DeleteAsync(Client client)
   {
     using(var conn = new MySqlConnection(connection))
     {
@@ -86,7 +86,7 @@ public class ClientRepositoryMySql : IService
       var query = $"delete from clients where id = @id;";
       var command = new MySqlCommand(query, conn);
       command.Parameters.Add(new MySqlParameter("@id", client.Id));
-      command.ExecuteNonQuery();
+      await command.ExecuteNonQueryAsync();
       conn.Close();
     }
   }
