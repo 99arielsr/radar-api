@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using projeto_radar_backend.Models;
+using radar_api.DTOs;
 using radar_api.Repositories.Interfaces;
+using radar_api.Services;
 
 namespace radar_api.Controllers;
 
@@ -14,48 +16,48 @@ public class ClientsController : ControllerBase
   }
 
   [HttpGet("")]
-  public IActionResult Index()
+  public async Task<IActionResult> Index()
   {
-    var clients = _service.GetAll();
-
+    var clients = await _service.GetAllAsync();
     return StatusCode(200, clients);
   }
 
   [HttpGet("{id}")]
-  public IActionResult Details([FromRoute] int? id)
+  public async Task<IActionResult> Details([FromRoute] int? id)
   {
-    var client = _service.GetAll().Find(c => c.Id == id);
+    var client = (await _service.GetAllAsync()).Find(c => c.Id == id);
     return StatusCode(200, client);
   }
 
   [HttpPost("")]
-  public IActionResult Create([FromBody] Client client)
+  public async Task<IActionResult> Create([FromBody] ClientDTO clientDTO)
   {
-    _service.Create(client);
+    var client = BuilderService<Client>.Builder(clientDTO);
+    await _service.CreateAsync(client);
     return StatusCode(201, client);
   }
 
   [HttpPut("{id}")]
-  public IActionResult Update([FromRoute] int id, [FromBody] Client client)
+  public async Task<IActionResult> Update([FromRoute] int id, [FromBody] Client client)
   {
     if (id != client.Id) return StatusCode(400, new {
       Message = "O id do cliente precisa bater com o da URL"
     });
 
-    var clientDB = _service.Update(client);
+    var clientDB = await _service.UpdateAsync(client);
 
     return StatusCode(200, clientDB);
   }
 
   [HttpDelete("{id}")]
-  public IActionResult Delete([FromRoute] int id)
+  public async Task<IActionResult> Delete([FromRoute] int id)
   {
-    var clientDB = _service.GetAll().Find(c => c.Id == id);
+    var clientDB = (await _service.GetAllAsync()).Find(c => c.Id == id);
     if (clientDB is null) return StatusCode(404, new {
       Message = "O cliente informado não existe"
     });
 
-    _service.Delete(clientDB);
+    await _service.DeleteAsync(clientDB);
     return StatusCode(204);
   }
 }

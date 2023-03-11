@@ -23,35 +23,31 @@ public class ClientRepositoryEntity : IService
 		context = new ClientContext();
 	}
 
-	private string? connection = null;
-
-	public List<Client> GetAll()
+	public async Task<List<Client>> GetAllAsync()
 	{
-		return context.Clients.ToList();
+		return await context.Clients.ToListAsync();
 	}
 
-	public void Create(Client client)
+	public async Task CreateAsync(Client client)
 	{
 		context.Clients.Add(client);
-		context.SaveChanges();
+		await context.SaveChangesAsync();
 	}
 
-	public Client Update(Client client)
+	public async Task<Client> UpdateAsync(Client client)
 	{
 		context.Entry(client).State = EntityState.Modified;
-		context.SaveChanges();
+		await context.SaveChangesAsync();
 
 		return client;
 	}
 
-	public void Delete(Client client)
+	public async Task DeleteAsync(Client client)
 	{
-		var obj = context.Clients.Find(client.Id);
-
+		var obj = await context.Clients.FindAsync(client.Id);
 		if (obj is null) throw new Exception("Cliente não encontrado!");
-
 		context.Clients.Remove(obj);
-		context.SaveChanges();
+		await context.SaveChangesAsync();
 	}
 }
 
